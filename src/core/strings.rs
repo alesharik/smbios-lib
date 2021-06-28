@@ -1,5 +1,7 @@
 use serde::{ser::SerializeSeq, Serialize, Serializer};
-use std::fmt;
+use core::fmt;
+#[cfg(feature = "no_std")]
+use alloc::{vec::Vec, string::String, vec};
 
 /// # SMBIOS Strings
 ///
@@ -64,7 +66,7 @@ impl Strings {
     }
 
     /// Iterates the raw bytes of the strings. The terminating 0 is not included in each string.
-    pub fn iter(&self) -> std::slice::Iter<'_, Vec<u8>> {
+    pub fn iter(&self) -> core::slice::Iter<'_, Vec<u8>> {
         self.strings.iter()
     }
 }

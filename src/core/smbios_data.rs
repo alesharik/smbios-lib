@@ -2,9 +2,11 @@ use super::header::Handle;
 use super::undefined_struct::{UndefinedStruct, UndefinedStructTable};
 use crate::structs::{DefinedStructTable, SMBiosStruct};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
+#[cfg(not(feature = "no_std"))]
 use std::io::Error;
-use std::{cmp::Ordering, slice::Iter};
-use std::{fmt, fs::read};
+use core::{cmp::Ordering, slice::Iter, fmt, any};
+#[cfg(not(feature = "no_std"))]
+use std::fs::read;
 
 /// # SMBIOS Data
 ///
@@ -36,6 +38,7 @@ impl<'a> SMBiosData {
     }
 
     /// Loads raw SMBios table data from a file
+    #[cfg(not(feature = "no_std"))]
     pub fn try_load_from_file(
         filename: &str,
         version: Option<SMBiosVersion>,
@@ -160,7 +163,7 @@ impl fmt::Debug for SMBiosData {
         // Convert to defined structures to see the structure fields
         let defined_table: DefinedStructTable<'_> = self.table.iter().collect();
 
-        fmt.debug_struct(std::any::type_name::<SMBiosData>())
+        fmt.debug_struct(any::type_name::<SMBiosData>())
             .field("version", &self.version)
             .field("table", &defined_table)
             .finish()

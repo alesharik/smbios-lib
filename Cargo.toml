@@ -20,11 +20,12 @@ path = "src/lib.rs"
 [[bin]]
 name = "smbiosdump"
 path = "src/main.rs"
+required-features = ["getopts", "serde", "serde_json"]
 
 [dependencies]
-getopts = "0.2.21"
+getopts = { version = "0.2.21", optional = true }
 serde = { version = "1", features = ["derive"] }
-serde_json = "1.0"
+serde_json = { version = "1.0", optional = true }
 
 [target.'cfg(windows)'.dependencies]
 libc = "0.2"
@@ -35,3 +36,6 @@ mach = "^0.3"
 core-foundation = "~0.6"
 core-foundation-sys = "~0.6"
 io-kit-sys = "0.1.0"
+
+[features]
+no_std = []
