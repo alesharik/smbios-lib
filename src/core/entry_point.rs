@@ -337,9 +337,9 @@ impl<'a> SMBiosEntryPoint32 {
     pub fn try_scan_from_raw(data: &[u8]) -> Result<Self, SMBiosEntryPoint32Error> {
         let range = 0..data.len();
         for offset in range.step_by(0x10) {
-            let anchor = &data[offset..offset + 5];
+            let anchor = &data[offset..offset + 4];
             if anchor == Self::SM_ANCHOR {
-                let length = &data[offset + 5..offset + 7];
+                let length = &data[offset + 4..offset + 6];
                 let struct_length = length[1] as usize;
                 let entry_point_buffer = data[0..struct_length].to_vec();
                 let entry_point: Self = entry_point_buffer.try_into()?;
@@ -683,9 +683,9 @@ impl<'a> SMBiosEntryPoint64 {
     pub fn try_scan_from_raw(data: &[u8]) -> Result<Self, SMBiosEntryPoint64Error> {
         let range = 0..data.len();
         for offset in range.step_by(0x10) {
-            let anchor = &data[offset..offset + 6];
+            let anchor = &data[offset..offset + 5];
             if anchor == Self::SM3_ANCHOR {
-                let length = &data[offset + 6..offset + 8];
+                let length = &data[offset + 5..offset + 7];
                 let struct_length = length[1] as usize;
                 let entry_point_buffer = data[0..struct_length].to_vec();
                 let entry_point: Self = entry_point_buffer.try_into()?;
