@@ -1,7 +1,9 @@
 use crate::{SMBiosStruct, UndefinedStruct};
 use serde::{ser::SerializeSeq, ser::SerializeStruct, Serialize, Serializer};
-use std::fmt;
-use std::ops::Deref;
+use core::{fmt, any};
+use core::ops::Deref;
+#[cfg(feature = "no_std")]
+use alloc::vec::Vec;
 
 /// # Management Controller Host Interface (Type 42)
 ///
@@ -93,7 +95,7 @@ impl<'a> SMBiosManagementControllerHostInterface<'a> {
 
 impl fmt::Debug for SMBiosManagementControllerHostInterface<'_> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<
+        fmt.debug_struct(any::type_name::<
             SMBiosManagementControllerHostInterface<'_>,
         >())
         .field("header", &self.parts.header)
@@ -192,7 +194,7 @@ pub struct HostInterfaceTypeData {
 
 impl fmt::Debug for HostInterfaceTypeData {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<HostInterfaceType>())
+        fmt.debug_struct(any::type_name::<HostInterfaceType>())
             .field("raw", &self.raw)
             .field("value", &self.value)
             .finish()
@@ -311,7 +313,7 @@ impl From<u8> for HostProtocolTypeData {
 
 impl fmt::Debug for HostProtocolTypeData {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<HostProtocolTypeData>())
+        fmt.debug_struct(any::type_name::<HostProtocolTypeData>())
             .field("raw", &self.raw)
             .field("value", &self.value)
             .finish()
@@ -396,7 +398,7 @@ impl<'a> ProtocolRecord<'a> {
 
 impl fmt::Debug for ProtocolRecord<'_> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<ProtocolRecord<'_>>())
+        fmt.debug_struct(any::type_name::<ProtocolRecord<'_>>())
             .field("protocol_type", &self.protocol_type())
             .field(
                 "protocol_type_specific_data_length",

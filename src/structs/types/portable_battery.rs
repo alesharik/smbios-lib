@@ -1,7 +1,9 @@
 use crate::{SMBiosStruct, UndefinedStruct};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
-use std::fmt;
-use std::ops::Deref;
+use core::{fmt, any};
+use core::ops::Deref;
+#[cfg(feature = "no_std")]
+use alloc::string::String;
 
 /// # Portable Battery (Type 22)
 ///
@@ -166,7 +168,7 @@ impl<'a> SMBiosPortableBattery<'a> {
 
 impl fmt::Debug for SMBiosPortableBattery<'_> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<SMBiosPortableBattery<'_>>())
+        fmt.debug_struct(any::type_name::<SMBiosPortableBattery<'_>>())
             .field("header", &self.parts.header)
             .field("location", &self.location())
             .field("manufacturer", &self.manufacturer())
@@ -240,7 +242,7 @@ pub struct PortableBatteryDeviceChemistryData {
 
 impl fmt::Debug for PortableBatteryDeviceChemistryData {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<PortableBatteryDeviceChemistryData>())
+        fmt.debug_struct(any::type_name::<PortableBatteryDeviceChemistryData>())
             .field("raw", &self.raw)
             .field("value", &self.value)
             .finish()

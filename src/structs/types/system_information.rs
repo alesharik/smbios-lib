@@ -1,11 +1,14 @@
 use crate::{SMBiosStruct, UndefinedStruct};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
-use std::{
+use core::{
     array::TryFromSliceError,
     convert::{TryFrom, TryInto},
     fmt,
     ops::Deref,
+    any
 };
+#[cfg(feature = "no_std")]
+use alloc::{string::String, format};
 
 /// # System Information (Type 1)
 ///
@@ -102,7 +105,7 @@ impl<'a> SMBiosSystemInformation<'a> {
 
 impl fmt::Debug for SMBiosSystemInformation<'_> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<SMBiosSystemInformation<'_>>())
+        fmt.debug_struct(any::type_name::<SMBiosSystemInformation<'_>>())
             .field("header", &self.parts.header)
             .field("manufacturer", &self.manufacturer())
             .field("product_name", &self.product_name())
@@ -272,7 +275,7 @@ pub struct SystemWakeUpTypeData {
 
 impl fmt::Debug for SystemWakeUpTypeData {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct(std::any::type_name::<SystemWakeUpTypeData>())
+        fmt.debug_struct(any::type_name::<SystemWakeUpTypeData>())
             .field("raw", &self.raw)
             .field("value", &self.value)
             .finish()
