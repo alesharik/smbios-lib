@@ -15,7 +15,7 @@ use core::{
     any
 };
 #[cfg(feature = "no_std")]
-use alloc::{vec::{Vec, IntoIter}, format};
+use alloc::{vec::{Vec, IntoIter}, format, string::String};
 
 /// # Embodies the three basic parts of an SMBIOS structure
 ///

@@ -7,6 +7,10 @@ use std::io::Error;
 use core::{cmp::Ordering, slice::Iter, fmt, any};
 #[cfg(not(feature = "no_std"))]
 use std::fs::read;
+#[cfg(feature = "no_std")]
+use alloc::vec::{Vec, IntoIter};
+#[cfg(not(feature = "no_std"))]
+use std::vec::IntoIter;
 
 /// # SMBIOS Data
 ///
@@ -151,7 +155,7 @@ impl<'a> SMBiosData {
 
 impl IntoIterator for SMBiosData {
     type Item = UndefinedStruct;
-    type IntoIter = std::vec::IntoIter<Self::Item>;
+    type IntoIter = IntoIter<Self::Item>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.table.into_iter()
