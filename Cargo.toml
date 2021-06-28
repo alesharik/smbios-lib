@@ -39,4 +39,4 @@ io-kit-sys = "0.1.0"
 
 [features]
 default = ["serde/std", "getopts", "serde_json"]
-no_std = ["serde/alloc", "serde/rc"]
+no_std = ["serde/alloc"]
