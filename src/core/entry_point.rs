@@ -9,6 +9,7 @@ use std::{
     num::Wrapping,
     ops::RangeBounds,
     path::Path,
+    any
 };
 #[cfg(feature = "no_std")]
 use core::{
@@ -36,7 +37,14 @@ pub enum SMBiosEntryPoint32Error {
     /// Intermediate entry point structure checksum verification failed
     IntermediateChecksumVerificationFailed,
     /// Entry Point not found
-    EntryPointNotFound
+    EntryPointNotFound,
+}
+
+#[cfg(not(feature = "no_std"))]
+impl SMBiosEntryPoint32Error {
+    fn into_io_error(&self) -> Error {
+        Error::new(ErrorKind::InvalidData, self.to_string())
+    }
 }
 
 impl fmt::Debug for SMBiosEntryPoint32Error {
@@ -290,7 +298,7 @@ impl<'a> SMBiosEntryPoint32 {
     /// Load this structure from a file
     #[cfg(not(feature = "no_std"))]
     pub fn try_load_from_file(filename: &Path) -> Result<Self, Error> {
-        read(filename)?.try_into()
+        read(filename)?.try_into().map_err(|e: SMBiosEntryPoint32Error| e.into_io_error())
     }
 
     /// Load this structure by scanning a file within the given offsets,
@@ -315,7 +323,8 @@ impl<'a> SMBiosEntryPoint32 {
                 entry_point_buffer.resize(struct_length, 0);
                 file.seek(SeekFrom::Start(offset))?;
                 file.read_exact(&mut entry_point_buffer)?;
-                let entry_point: Self = entry_point_buffer.try_into()?;
+                let entry_point: Self = entry_point_buffer.try_into()
+                    .map_err(|e: SMBiosEntryPoint32Error| e.into_io_error())?;
                 return Ok(entry_point);
             }
         }
@@ -464,6 +473,13 @@ pub enum SMBiosEntryPoint64Error {
     EntryPointLengthTooBig,
     /// Entry Point not found
     EntryPointNotFound
+}
+
+#[cfg(not(feature = "no_std"))]
+impl SMBiosEntryPoint64Error {
+    fn into_io_error(&self) -> Error {
+        Error::new(ErrorKind::InvalidData, self.to_string())
+    }
 }
 
 impl fmt::Debug for SMBiosEntryPoint64Error {
@@ -628,7 +644,7 @@ impl<'a> SMBiosEntryPoint64 {
     /// Load this structure from a file
     #[cfg(not(feature = "no_std"))]
     pub fn try_load_from_file(filename: &Path) -> Result<Self, Error> {
-        read(filename)?.try_into()
+        read(filename)?.try_into().map_err(|e: SMBiosEntryPoint64Error| e.into_io_error())
     }
 
     /// Load this structure by scanning a file within the given offsets,
@@ -653,7 +669,8 @@ impl<'a> SMBiosEntryPoint64 {
                 entry_point_buffer.resize(struct_length, 0);
                 file.seek(SeekFrom::Start(offset))?;
                 file.read_exact(&mut entry_point_buffer)?;
-                let entry_point: Self = entry_point_buffer.try_into()?;
+                let entry_point: Self = entry_point_buffer.try_into()
+                    .map_err(|e: SMBiosEntryPoint64Error| e.into_io_error())?;
                 return Ok(entry_point);
             }
         }

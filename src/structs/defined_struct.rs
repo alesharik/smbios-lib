@@ -5,6 +5,8 @@ use serde::Serialize;
 use core::iter::FromIterator;
 #[cfg(feature = "no_std")]
 use alloc::vec::{Vec, IntoIter};
+#[cfg(not(feature = "no_std"))]
+use std::vec::IntoIter;
 
 use crate::core::UndefinedStruct;
 
