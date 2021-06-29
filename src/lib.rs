@@ -22,6 +22,8 @@ mod structs;
 mod unix;
 #[cfg(not(feature = "no_std"))]
 mod windows;
+#[cfg(all(feature = "x86_64", feature = "no_std"))]
+mod x86_64;
 
 pub use structs::*;
 
