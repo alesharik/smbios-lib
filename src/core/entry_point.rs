@@ -341,7 +341,7 @@ impl<'a> SMBiosEntryPoint32 {
             if anchor == Self::SM_ANCHOR {
                 let length = &data[offset + 4..offset + 6];
                 let struct_length = length[1] as usize;
-                let entry_point_buffer = data[0..struct_length].to_vec();
+                let entry_point_buffer = data[offset..offset + struct_length].to_vec();
                 let entry_point: Self = entry_point_buffer.try_into()?;
                 return Ok(entry_point);
             }
@@ -687,7 +687,7 @@ impl<'a> SMBiosEntryPoint64 {
             if anchor == Self::SM3_ANCHOR {
                 let length = &data[offset + 5..offset + 7];
                 let struct_length = length[1] as usize;
-                let entry_point_buffer = data[0..struct_length].to_vec();
+                let entry_point_buffer = data[offset..offset + struct_length].to_vec();
                 let entry_point: Self = entry_point_buffer.try_into()?;
                 return Ok(entry_point);
             }
