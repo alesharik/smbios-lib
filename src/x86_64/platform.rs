@@ -50,7 +50,6 @@ impl fmt::Display for SMBiosLoadError {
 
 
 /// Loads [SMBiosData] by scanning memory from 0xF0000 to 0xFFFFF
-#[allow(dead_code)]
 pub fn table_load_from_device<T: MemoryMapper>(mapper: &mut T) -> Result<SMBiosData, SMBiosLoadError> {
     let start = mapper.map_block(BLOCK_START, BLOCK_SIZE);
 

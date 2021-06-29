@@ -42,3 +42,6 @@ pub use unix::*;
 
 #[cfg(all(any(target_os = "macos", target_os = "ios"), not(feature = "no_std")))]
 pub use macos::*;
+
+#[cfg(all(feature = "x86_64", feature = "no_std"))]
+pub use crate::x86_64::*;
