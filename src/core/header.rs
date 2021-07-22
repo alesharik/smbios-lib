@@ -74,6 +74,7 @@ impl fmt::Debug for SMBiosType {
 /// # SMBIOS Header
 ///
 /// The header part/section of a structure
+#[derive(Clone)]
 pub struct Header([u8; 4]);
 
 impl fmt::Debug for Header {

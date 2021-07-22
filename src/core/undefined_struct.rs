@@ -31,7 +31,7 @@ use alloc::{vec::{Vec, IntoIter}, format, string::String};
 /// necessary.  Therefore, [UndefinedStruct] is public for the case of OEM,
 /// as well as when working with structures that are defined in an SMBIOS
 /// standard newer than the one this library currently supports.
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 pub struct UndefinedStruct {
     /// The [Header] of the structure
     pub header: Header,

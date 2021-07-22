@@ -6,6 +6,7 @@ use alloc::{vec::Vec, string::String, vec};
 /// # SMBIOS Strings
 ///
 /// The strings part/section of a structure
+#[derive(Clone)]
 pub struct Strings {
     strings: Vec<Vec<u8>>,
     current_string_index: usize,
